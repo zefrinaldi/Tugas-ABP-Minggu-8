@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\GudangController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,14 +26,32 @@ Route::get('/hello', function () {
     return "Hello World!";
 });
 
-Route::get('/produk', [ProdukController::class, 'index']);
+Route::middleware(['auth'])->group(function() {
+    Route::get('/product', [ProdukController::class, 'index']);
+    Route::get('/product/add', [ProdukController::class, 'create']);
+    Route::post('/product', [ProdukController::class, 'store']);
+    Route::get('/product/edit/{id}', [ProdukController::class, 'edit']);
+    Route::post('product/update/{id}', [ProdukController::class, 'update']);
+    Route::get('/product/delete/{id}', [ProdukController::class, 'delete']);
 
-Route::get('/produk/create', [ProdukController::class, 'create']);
+    Route::get('/brand', [BrandController::class, 'index']);
+    Route::get('/brand/add', [BrandController::class, 'create']);
+    Route::post('/brand', [BrandController::class, 'store']);
+    Route::get('/brand/edit/{id}', [BrandController::class, 'edit']);
+    Route::post('brand/update/{id}', [BrandController::class, 'update']);
+    Route::get('/brand/delete/{id}', [BrandController::class, 'delete']);
 
-Route::post('/produk', [ProdukController::class, 'store']);
+    Route::get('/gudang', [GudangController::class, 'index']);
+    Route::get('/gudang/add', [GudangController::class, 'create']);
+    Route::post('/gudang', [GudangController::class, 'store']);
+    Route::get('/gudang/edit/{id}', [GudangController::class, 'edit']);
+    Route::post('gudang/update/{id}', [GudangController::class, 'update']);
+    Route::get('/gudang/delete/{id}', [GudangController::class, 'delete']);
+});
 
-Route::get('/produk/edit/{id}', [ProdukController::class, 'edit']);
+Route::get('/layout', function(){
+    return view('layout.index');
+});
+Auth::routes();
 
-Route::post('/produk/update/{id}', [ProdukController::class, 'update']);
-
-Route::get('/produk/delete/{id}', [ProdukController::class, 'delete']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
